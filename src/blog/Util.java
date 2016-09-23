@@ -12,39 +12,42 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
  * @author admin
  */
 @Entity
-public class Message implements Serializable {
+public class Util implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "util_id")
-    private Util expediteur;
-
-    @ManyToMany
-    @JoinTable(name = "message_destinataire") //jointure avec table commande
-    private List<Util> destinataire = new ArrayList<>();
-/*
-    public Util getExpediteur() {
-        return expediteur;
-    }
-
-    public void setExpediteur(Util expediteur) {
-        this.expediteur = expediteur;
-    }
-*/
+    /*@OneToOne(mappedBy = "utilisateur")
+    private List<Numsecu> numerosecu = new ArrayList<>();
+    */
+    @OneToMany(mappedBy = "utilisateur")
+    private List<Page> pages = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "utilisateur")
+    private List<Article> articles = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "utilisateur")
+    private List<Commentaire> commmentaires = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "expediteur")
+    private List<Message> messagesE = new ArrayList<>();
+    
+    @ManyToMany(mappedBy = "destinataire") //jointure avec table commande
+    private List<Message> messages =new  ArrayList<>();
+    
+    
     public Long getId() {
         return id;
     }
@@ -63,10 +66,10 @@ public class Message implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Message)) {
+        if (!(object instanceof Util)) {
             return false;
         }
-        Message other = (Message) object;
+        Util other = (Util) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -75,7 +78,7 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
-        return "blog.Message[ id=" + id + " ]";
+        return "blog.Util[ id=" + id + " ]";
     }
-
+    
 }
